@@ -4,7 +4,9 @@
     "build:functions": "tsc",
     "build:static": "ncp src/static/ out/public/",
     "build": "npm run build:prep && npm run build:static && npm run build:functions",
-    "start": "netlify dev"
+    "watch:netlify": "netlify dev",
+    "watch:tsc": "tsc --watch",
+    "watch": "npm run build:prep && npm run build:static & npm run watch:tsc & npm run watch:netlify"
   },
   "dependencies": {
     "@netlify/functions": "^2.4.0",
