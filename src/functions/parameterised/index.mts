@@ -1,52 +1,47 @@
 import type { Config } from "@netlify/functions";
 import type { MyParameters } from './types.mjs';
 
+function validateType<T>(value: T, type: string, fieldName: string): string | null {
+  if (typeof value !== type) {
+    return `Invalid ${fieldName}.`;
+  }
+  return null;
+}
+
+function validateDate(dateString: string, fieldName: string): string | null {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    return `Invalid ${fieldName}.`;
+  }
+  return null;
+}
+
 export default async (req: Request) => {
-  const body = await req.json() as MyParameters;
+  const body = await req.json();
 
-  if (!body)
-  {
-    return new Response("No parameters provided.", { status: 400 });
+  const errors = [
+    validateType(body.Name, 'string', 'Name'),
+    validateType(body.FavouriteNumber, 'number', 'Favourite Number'),
+    validateType(body.HighFive, 'boolean', 'High Five'),
+    body.DateOfBirth !== undefined ? validateDate(body.DateOfBirth, 'Date of Birth') : null
+  ].filter(e => e !== null);
+
+  if (errors.length > 0) {
+    return new Response(errors.join(", "), { status: 400 });
   }
 
-  if (typeof body.Name !== "string")
-  {
-    return new Response("Invalid Name.", { status: 400 });
+  if (typeof body.DateOfBirth === "string") {
+    body.DateOfBirth = new Date(body.DateOfBirth);
   }
 
-  if (typeof body.FavouriteNumber !== "number")
-  {
-    return new Response("Invalid Favourite Number.", { status: 400 });
-  }
-
-  if (typeof body.HighFive !== "boolean")
-  {
-    return new Response("Invalid High Five.", { status: 400 });
-  }
-
-  if (body.DateOfBirth !== undefined) {
-    if (typeof body.DateOfBirth === "string") {
-      body.DateOfBirth = new Date(body.DateOfBirth);
-      if (isNaN(body.DateOfBirth.getTime())) {
-        return new Response("Invalid Date of Birth.", { status: 400 });
-      }
-    }
-  }
-
-  const params = body as MyParameters;
+  const model = body as MyParameters;
 
   const responseParts = [
-    `Hello ${params.Name}!`,
-    `Your favourite number is ${params.FavouriteNumber}.`,
-  ]
-
-  if (params.HighFive) {
-    responseParts.push("High five! Awesome!");
-  }
-
-  if (params.DateOfBirth) {
-    responseParts.push(`You were born on ${params.DateOfBirth.toISOString().split('T')[0]}.`);
-  }
+    `Hello ${model.Name}!`,
+    `Your favourite number is ${model.FavouriteNumber}.`,
+    model.HighFive ? "High five! Awesome!" : "",
+    model.DateOfBirth ? `You were born on ${model.DateOfBirth.toISOString().split('T')[0]}.` : ""
+  ].filter(part => part.length > 0);
 
   return new Response(responseParts.join(" "));
 };
