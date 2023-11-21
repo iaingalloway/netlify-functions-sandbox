@@ -4,7 +4,7 @@ This repository is a sandbox for testing features of Netlify Functions.
 
 ## Features
 
-- [ ] Hello, world! index.html
+- [X] Hello, world! index.html
 - [ ] Hello, world! function
 - [ ] Function with query parameters
 - [ ] Function with config via URL
