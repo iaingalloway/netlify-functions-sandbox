@@ -1,0 +1,5 @@
+{
+  "watch": ["src/static"],
+  "ext": "html,toml,yaml,css,js",
+  "exec": "npm run build:static"
+}
