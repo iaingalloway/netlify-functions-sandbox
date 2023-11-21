@@ -14,3 +14,4 @@ This repository is a sandbox for testing features of Netlify Functions.
 - [ ] Send email
 - [ ] Send email with PDF attachment
 - [ ] Figure out the difference between Netlify "Serverless functions" and "Edge functions"
+- [ ] Authenticate with client certificate
