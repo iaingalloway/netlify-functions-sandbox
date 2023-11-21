@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build:static": "ncp src/static/ public/",
+    "build": "npm run build:static"
+  },
+  "dependencies": {
+    "ncp": "^2.0.0"
+  }
+}
