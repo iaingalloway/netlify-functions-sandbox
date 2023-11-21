@@ -1,5 +1,14 @@
 {
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2018",
+    "moduleResolution": "node",
+    "outDir": "out/functions",
+    "rootDir": "src/functions",
+    "strict": true,
+    "esModuleInterop": true
+  },
   "include": [
-    "src/functions"
+    "src/functions/**/*.mts"
   ]
 }

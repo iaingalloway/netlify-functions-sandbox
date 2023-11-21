@@ -1,10 +1,18 @@
 {
   "scripts": {
-    "build:static": "ncp src/static/ public/",
-    "build": "npm run build:static"
+    "build:prep": "rm -rf out && mkdir out",
+    "build:functions": "tsc",
+    "build:static": "ncp src/static/ out/public/",
+    "build": "npm run build:prep && npm run build:static && npm run build:functions",
+    "start": "netlify dev"
   },
   "dependencies": {
     "@netlify/functions": "^2.4.0",
     "ncp": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.3",
+    "netlify-cli": "^17.5.3",
+    "typescript": "^5.3.2"
   }
 }
