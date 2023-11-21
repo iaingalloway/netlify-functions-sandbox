@@ -6,7 +6,7 @@ This repository is a sandbox for testing features of Netlify Functions.
 
 - [X] Hello, world! index.html
 - [X] Hello, world! function
-- [ ] Function with query parameters
+- [X] Function with parameters from POST JSON body
 - [ ] Function with config via URL
 - [ ] Function with config overrides
 - [ ] Generate templated text
