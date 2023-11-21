@@ -5,7 +5,7 @@ This repository is a sandbox for testing features of Netlify Functions.
 ## Features
 
 - [X] Hello, world! index.html
-- [ ] Hello, world! function
+- [X] Hello, world! function
 - [ ] Function with query parameters
 - [ ] Function with config via URL
 - [ ] Function with config overrides
@@ -15,3 +15,10 @@ This repository is a sandbox for testing features of Netlify Functions.
 - [ ] Send email with PDF attachment
 - [ ] Figure out the difference between Netlify "Serverless functions" and "Edge functions"
 - [ ] Authenticate with client certificate
+
+## Usage
+
+1. Clone this repository
+2. Open the repository in VS Code
+3. When prompted "Folder contains a Dev Container configuration file. Reopen folder to develop in a container." click "Reopen in Container" (or press `Ctrl+Shift+P` and select "Dev Containers: Reopen in Container")
+4. Press `Ctrl+Shift+P` and select "TypeScript: Select TypeScript Version" and select "Use Workspace Version"
