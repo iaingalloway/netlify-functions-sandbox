@@ -3,14 +3,15 @@
     "module": "ESNext",
     "target": "ES2018",
     "moduleResolution": "node",
-    "outDir": "out/functions",
-    "rootDir": "src/functions",
+    "outDir": "out",
+    "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src/functions/**/*.mts"
+    "src/**/*.mts",
+    "spec/**/*.mts"
   ]
 }

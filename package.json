@@ -1,13 +1,16 @@
 {
+  "type": "module",
   "scripts": {
     "build:prep": "rm -rf out && mkdir out",
     "build:functions": "tsc",
     "build:static": "ncp src/static/ out/public/",
     "build": "npm run build:prep && npm run build:static && npm run build:functions",
+    "test": "npm run build && jasmine",
     "watch:functions:netlify": "netlify dev",
-    "watch:functions:tsc": "tsc --watch",
+    "watch:functions:tsc": "tsc --watch --preserveWatchOutput",
     "watch:functions": "npm run watch:functions:tsc & npm run watch:functions:netlify",
     "watch:static": "nodemon --config nodemon-static.json",
+    "watch:tests": "nodemon --config nodemon-tests.json",
     "watch": "npm run build:prep && npm run watch:static & npm run watch:functions"
   },
   "dependencies": {
@@ -16,7 +19,9 @@
     "ncp": "^2.0.0"
   },
   "devDependencies": {
+    "@types/jasmine": "^5.1.4",
     "@types/node": "^20.9.3",
+    "jasmine": "^5.1.0",
     "netlify-cli": "^17.5.3",
     "nodemon": "^3.0.1",
     "typescript": "^5.3.2"

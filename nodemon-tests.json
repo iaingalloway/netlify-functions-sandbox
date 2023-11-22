@@ -1,0 +1,5 @@
+{
+  "watch": ["out/**/*.mjs", "out/**/*.mjs"],
+  "ext": "mjs",
+  "exec": "jasmine"
+}
