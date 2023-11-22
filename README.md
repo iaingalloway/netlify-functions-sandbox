@@ -4,11 +4,11 @@ This repository is a sandbox for testing features of Netlify Functions.
 
 ## Features
 
-- [X] Hello, world! index.html
-- [X] Hello, world! function
-- [X] Function with parameters from POST JSON body
-  - [X] Input validation
-  - [X] Unit tests
+- [x] Hello, world! index.html
+- [x] Hello, world! function
+- [x] Function with parameters from POST JSON body
+  - [x] Input validation
+  - [x] Unit tests
 - [ ] Function with config via URL
 - [ ] Function with config overrides
 - [ ] Generate templated text

@@ -10,8 +10,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": [
-    "src/**/*.mts",
-    "spec/**/*.mts"
-  ]
+  "include": ["src/**/*.mts", "spec/**/*.mts"]
 }
