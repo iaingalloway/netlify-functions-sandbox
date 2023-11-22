@@ -1,15 +1,15 @@
 import type { Config } from '@netlify/functions';
-import { MyParameters } from './types.mjs';
+import ParameterisedFunctionDto from './parameterised-dto.mjs';
 import { getClassSchema } from 'joi-class-decorators';
 import Joi from 'joi';
 
 export default async (req: Request) => {
   const body = await req.json();
 
+  const promise = getClassSchema(ParameterisedFunctionDto).validateAsync(body);
+
   try {
-    const model = (await getClassSchema(MyParameters).validateAsync(
-      body
-    )) as MyParameters;
+    const model = (await promise) as ParameterisedFunctionDto;
 
     const responseParts = [
       `Hello ${model.Name}!`,

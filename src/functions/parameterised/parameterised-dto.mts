@@ -5,7 +5,7 @@ import Joi from 'joi';
   allowUnknown: false,
   abortEarly: false
 })
-export class MyParameters {
+export default class ParameterisedFunctionDto {
   @JoiSchema(Joi.string().required())
   Name!: string;
 
