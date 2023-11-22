@@ -1,9 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "build:prep": "rm -rf out && mkdir out",
+    "build:prep": "rm -rf dist && mkdir dist",
     "build:functions": "tsc",
-    "build:static": "ncp src/static/ out/public/",
+    "build:static": "ncp src/static/ dist/public/",
     "build": "npm run build:prep && npm run build:static && npm run build:functions",
     "test": "npm run build && jasmine",
     "watch:functions:netlify": "netlify dev",
