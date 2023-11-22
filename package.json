@@ -4,10 +4,11 @@
     "build:functions": "tsc",
     "build:static": "ncp src/static/ out/public/",
     "build": "npm run build:prep && npm run build:static && npm run build:functions",
-    "watch:netlify": "netlify dev",
-    "watch:tsc": "tsc --watch",
+    "watch:functions:netlify": "netlify dev",
+    "watch:functions:tsc": "tsc --watch",
+    "watch:functions": "npm run watch:functions:tsc & npm run watch:functions:netlify",
     "watch:static": "nodemon --config nodemon-static.json",
-    "watch": "npm run build:prep && npm run watch:static & npm run watch:tsc & npm run watch:netlify"
+    "watch": "npm run build:prep && npm run watch:static & npm run watch:functions"
   },
   "dependencies": {
     "@netlify/functions": "^2.4.0",
