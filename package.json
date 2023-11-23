@@ -19,7 +19,8 @@
   "dependencies": {
     "@netlify/functions": "^2.4.0",
     "joi-class-decorators": "^1.1.1",
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/jasmine": "^5.1.4",

@@ -9,8 +9,8 @@ This repository is a sandbox for testing features of Netlify Functions.
 - [x] Function with parameters from POST JSON body
   - [x] Input validation
   - [x] Unit tests
-- [ ] Function with config via URL
-- [ ] Function with config overrides
+- [x] Function with config via URL
+- [x] Function with config overrides
 - [ ] Generate templated text
 - [ ] Generate PDF
 - [ ] Send email
