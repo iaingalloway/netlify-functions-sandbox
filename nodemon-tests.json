@@ -1,5 +1,5 @@
 {
   "watch": ["dist/*"],
   "ext": "mjs",
-  "exec": "jasmine"
+  "exec": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
 }
