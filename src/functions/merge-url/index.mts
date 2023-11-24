@@ -2,61 +2,31 @@ import type { Config } from '@netlify/functions';
 import MergeUrlDto from './merge-url-dto.mjs';
 import { getClassSchema } from 'joi-class-decorators';
 import Joi from 'joi';
-import fetch from 'node-fetch';
+import parametersProvider from './parameters-provider.mjs';
+import httpClient from './http-json-client.mjs';
 
-async function fetchParametersFromUrl(
-  baseUrl: string,
-  partialUrl: string,
-  maxDepth: number
-): Promise<any> {
-  if (maxDepth <= 0) return {};
-
-  // Prepend the base URL if the partial URL doesn't start with "http://" or "https://"
-  const fullUrl = partialUrl.startsWith('http')
-    ? partialUrl
-    : `${baseUrl}${partialUrl}`;
-
-  const response = await fetch(fullUrl);
-  if (!response.ok)
-    throw new Error(`Failed to fetch parameters from URL: ${fullUrl}`);
-
-  const data: any = await response.json();
-  if (data.ConfigUrl && maxDepth > 1) {
-    const nestedData = await fetchParametersFromUrl(
-      baseUrl,
-      data.ConfigUrl,
-      maxDepth - 1
-    );
-    return { ...nestedData, ...data };
-  }
-
-  return data;
-}
-
-export default async (req: Request) => {
+export default async (
+  req: Request,
+  provider = parametersProvider,
+  client = httpClient
+) => {
   const body = await req.json();
 
-  // Extract base URL from the request
-  const baseUrl = new URL(req.url).origin;
-
   let externalParams = {};
-  const MAX_DEPTH = parseInt(process.env.MAX_DEPTH || '3');
 
   if (body.ConfigUrl) {
-    externalParams = await fetchParametersFromUrl(
-      baseUrl,
-      body.ConfigUrl,
-      MAX_DEPTH
-    );
+    const baseUrl = new URL(req.url).origin;
+    const MAX_DEPTH = parseInt(process.env.MAX_DEPTH || '3');
+
+    externalParams = await provider(baseUrl, body.ConfigUrl, MAX_DEPTH, client);
   }
 
-  // Merge parameters: externalParams first, then body to overwrite
   const mergedParams = { ...externalParams, ...body };
 
+  const promise = getClassSchema(MergeUrlDto).validateAsync(mergedParams);
+
   try {
-    const model = (await getClassSchema(MergeUrlDto).validateAsync(
-      mergedParams
-    )) as MergeUrlDto;
+    const model = (await promise) as MergeUrlDto;
 
     const responseParts = [
       `I found an adorable ${model.TypeOfAnimal} called ${model.Name}!`,

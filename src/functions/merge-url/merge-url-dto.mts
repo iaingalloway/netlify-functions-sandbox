@@ -6,7 +6,7 @@ import Joi from 'joi';
   abortEarly: false
 })
 export default class MergeUrlDto {
-  @JoiSchema(Joi.string().uri({ allowRelative: true }).required())
+  @JoiSchema(Joi.string().uri({ allowRelative: true }).optional())
   ConfigUrl!: string;
 
   @JoiSchema(Joi.string().valid('cat', 'dog', 'fish').required())
@@ -15,6 +15,6 @@ export default class MergeUrlDto {
   @JoiSchema(Joi.string().required())
   Name!: string;
 
-  @JoiSchema(Joi.number().required())
+  @JoiSchema(Joi.number().optional())
   Age?: number;
 }
