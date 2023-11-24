@@ -1,6 +1,6 @@
 import { JoiSchema, JoiSchemaOptions } from 'joi-class-decorators';
 import Joi from 'joi';
-import NestedParameterDto from '../nested-parameter-dto.mjs';
+import type NestedParameterDto from '../nested-parameter-dto.mjs';
 
 @JoiSchemaOptions({
   allowUnknown: false,

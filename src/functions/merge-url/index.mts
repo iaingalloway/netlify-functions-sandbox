@@ -9,16 +9,17 @@ export default async (
   req: Request,
   provider: typeof parametersProvider<MergeUrlDto> = parametersProvider<MergeUrlDto>,
   client = fetchJson<MergeUrlDto>
-) => {
-  const body = await req.json();
+): Promise<Response> => {
+  const body = (await req.json()) as { ConfigUrl: string };
 
   let externalParams = {};
 
-  if (body.ConfigUrl) {
+  if (body.ConfigUrl?.length > 0) {
     const baseUrl = new URL(req.url).origin;
-    const MAX_DEPTH = parseInt(process.env.MAX_DEPTH || '3');
+    const MAX_DEPTH = parseInt(process.env.MAX_DEPTH ?? '3');
 
-    externalParams = await provider(baseUrl, body.ConfigUrl, MAX_DEPTH, client);
+    externalParams =
+      (await provider(baseUrl, body.ConfigUrl, MAX_DEPTH, client)) ?? {};
   }
 
   const mergedParams = { ...externalParams, ...body };
@@ -30,7 +31,7 @@ export default async (
 
     const responseParts = [
       `I found an adorable ${model.TypeOfAnimal} called ${model.Name}!`,
-      model.Age ? `It is ${model.Age} years old.` : ''
+      model.Age != null ? `It is ${model.Age} years old.` : ''
     ].filter(part => part.length > 0);
 
     return new Response(responseParts.join(' '), { status: 200 });

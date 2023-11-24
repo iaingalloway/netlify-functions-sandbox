@@ -3,7 +3,7 @@ import ParameterisedFunctionDto from './parameterised-dto.mjs';
 import { getClassSchema } from 'joi-class-decorators';
 import Joi from 'joi';
 
-export default async (req: Request) => {
+export default async (req: Request): Promise<Response> => {
   const body = await req.json();
 
   const promise = getClassSchema(ParameterisedFunctionDto).validateAsync(body);
@@ -15,7 +15,7 @@ export default async (req: Request) => {
       `Hello ${model.Name}!`,
       `Your favourite number is ${model.FavouriteNumber}.`,
       model.HighFive ? 'High five! Awesome!' : '',
-      model.DateOfBirth
+      model.DateOfBirth != null
         ? `You were born on ${model.DateOfBirth.toISOString().split('T')[0]}.`
         : ''
     ].filter(part => part.length > 0);

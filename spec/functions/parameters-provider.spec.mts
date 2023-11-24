@@ -1,4 +1,4 @@
-import NestedParameterDto from '../../src/functions/nested-parameter-dto.mjs';
+import type NestedParameterDto from '../../src/functions/nested-parameter-dto.mjs';
 import fetchParametersFromUrl from '../../src/functions/parameters-provider.mjs';
 
 const baseUrl = 'https://example.com';
@@ -10,45 +10,47 @@ class TestDto implements NestedParameterDto {
 }
 
 const mockDataUrl = '/mock-data.json';
-const mockData = { finalData: 'value', otherData: 'value' } as TestDto;
+const mockData = { finalData: 'value', otherData: 'value' };
 
 const mockNestedDataUrl = '/mock-nested-data.json';
-const mockNestedData = { finalData: 'finalValue' } as TestDto;
+const mockNestedData = { finalData: 'finalValue' };
 
 const mockDataWithNestedUrl = '/mock-data-with-nested.json';
 const mockDataWithNested = {
   ConfigUrl: mockNestedDataUrl,
   otherData: 'value'
-} as TestDto;
+};
 
 const mockNestedOverrideUrl = '/mock-nested-override.json';
-const mockNestedOverride = { finalData: 'overriddenValue' } as TestDto;
+const mockNestedOverride = { finalData: 'overriddenValue' };
 
 const mockDataWithNestedOverrideUrl = '/mock-data-with-nested-override.json';
 const mockDataWithNestedOverride = {
   ConfigUrl: mockNestedOverrideUrl,
   finalData: 'value',
   otherData: 'value'
-} as TestDto;
+};
 
-const mockHttpClient = jasmine.createSpy('httpJsonClient').and.callFake(url => {
-  if (url == `${baseUrl}${mockDataUrl}`) {
-    return Promise.resolve(mockData);
-  } else if (url == `${baseUrl}${mockNestedDataUrl}`) {
-    return Promise.resolve(mockNestedData);
-  } else if (url == `${baseUrl}${mockDataWithNestedUrl}`) {
-    return Promise.resolve(mockDataWithNested);
-  } else if (url == `${baseUrl}${mockNestedOverrideUrl}`) {
-    return Promise.resolve(mockNestedOverride);
-  } else if (url == `${baseUrl}${mockDataWithNestedOverrideUrl}`) {
-    return Promise.resolve(mockDataWithNestedOverride);
-  }
-  throw Error('Unexpected URL');
-});
+const mockClient = jasmine
+  .createSpy('httpJsonClient')
+  .and.callFake(async url => {
+    if (url === `${baseUrl}${mockDataUrl}`) {
+      return await Promise.resolve(mockData);
+    } else if (url === `${baseUrl}${mockNestedDataUrl}`) {
+      return await Promise.resolve(mockNestedData);
+    } else if (url === `${baseUrl}${mockDataWithNestedUrl}`) {
+      return await Promise.resolve(mockDataWithNested);
+    } else if (url === `${baseUrl}${mockNestedOverrideUrl}`) {
+      return await Promise.resolve(mockNestedOverride);
+    } else if (url === `${baseUrl}${mockDataWithNestedOverrideUrl}`) {
+      return await Promise.resolve(mockDataWithNestedOverride);
+    }
+    throw Error('Unexpected URL');
+  });
 
 describe('fetchParametersFromUrl', () => {
   beforeEach(() => {
-    mockHttpClient.calls.reset();
+    mockClient.calls.reset();
   });
 
   it('should fetch data from URL', async () => {
@@ -56,11 +58,11 @@ describe('fetchParametersFromUrl', () => {
       baseUrl,
       mockDataUrl,
       1,
-      mockHttpClient
+      mockClient
     );
 
     expect(result).toEqual(mockData);
-    expect(mockHttpClient).toHaveBeenCalledWith(
+    expect(mockClient).toHaveBeenCalledWith(
       'https://example.com/mock-data.json'
     );
   });
@@ -70,11 +72,11 @@ describe('fetchParametersFromUrl', () => {
       baseUrl,
       mockDataWithNestedUrl,
       2,
-      mockHttpClient
+      mockClient
     );
 
     expect(result).toEqual({ ...mockDataWithNested, ...mockNestedData });
-    expect(mockHttpClient.calls.allArgs()).toEqual([
+    expect(mockClient.calls.allArgs()).toEqual([
       ['https://example.com/mock-data-with-nested.json'],
       ['https://example.com/mock-nested-data.json']
     ]);
@@ -85,11 +87,11 @@ describe('fetchParametersFromUrl', () => {
       baseUrl,
       mockDataWithNestedUrl,
       1,
-      mockHttpClient
+      mockClient
     );
 
     expect(result).toEqual(mockDataWithNested);
-    expect(mockHttpClient).toHaveBeenCalledOnceWith(
+    expect(mockClient).toHaveBeenCalledOnceWith(
       'https://example.com/mock-data-with-nested.json'
     );
   });
@@ -99,15 +101,15 @@ describe('fetchParametersFromUrl', () => {
       baseUrl,
       mockDataWithNestedOverrideUrl,
       3,
-      mockHttpClient
+      mockClient
     );
 
     expect(result).toEqual({
       ...mockDataWithNestedOverride,
       ...mockNestedOverride
     });
-    expect(result.finalData).toEqual('overriddenValue');
-    expect(mockHttpClient.calls.allArgs()).toEqual([
+    expect(result?.finalData).toEqual('overriddenValue');
+    expect(mockClient.calls.allArgs()).toEqual([
       ['https://example.com/mock-data-with-nested-override.json'],
       ['https://example.com/mock-nested-override.json']
     ]);
