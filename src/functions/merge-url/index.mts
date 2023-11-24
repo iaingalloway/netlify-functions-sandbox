@@ -2,13 +2,13 @@ import type { Config } from '@netlify/functions';
 import MergeUrlDto from './merge-url-dto.mjs';
 import { getClassSchema } from 'joi-class-decorators';
 import Joi from 'joi';
-import parametersProvider from './parameters-provider.mjs';
-import httpClient from './http-json-client.mjs';
+import parametersProvider from '../parameters-provider.mjs';
+import fetchJson from '../fetch-json.mjs';
 
 export default async (
   req: Request,
-  provider = parametersProvider,
-  client = httpClient
+  provider: typeof parametersProvider<MergeUrlDto> = parametersProvider<MergeUrlDto>,
+  client = fetchJson<MergeUrlDto>
 ) => {
   const body = await req.json();
 
